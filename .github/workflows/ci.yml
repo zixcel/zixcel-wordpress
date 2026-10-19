@@ -18,7 +18,12 @@ jobs:
           toolchain: 1.97.1
           components: rustfmt, clippy
       - run: cargo fmt --all --check
-      - run: cargo test --locked --all-targets
-      - run: cargo clippy --locked --all-targets -- -D warnings
-      - run: cargo build --locked --bin zix-wordpress
+      - name: Install native Secret Service test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libsecret-1-dev dbus gnome-keyring
+      - run: cargo test --locked --all-targets --all-features
+      - run: cargo clippy --locked --all-targets --all-features -- -D warnings
+      - run: bash scripts/acceptance/keyring.sh
+      - run: cargo build --locked --features os-keyring --bin zix-wordpress
       - run: target/debug/zix-wordpress --version

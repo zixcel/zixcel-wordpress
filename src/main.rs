@@ -1,6 +1,10 @@
 #![forbid(unsafe_code)]
 mod command;
+mod credentials;
+mod help;
 mod input;
+mod provider;
+mod redaction;
 use serde_json::json;
 use std::process::ExitCode;
 fn main() -> ExitCode {

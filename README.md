@@ -4,9 +4,12 @@ Rust library and native `zix-wordpress` client for origin-bound WordPress core
 REST authentication, permission discovery, bounded content reads and explicitly
 approved creation of a non-public draft. Linux/WSL is the initial runtime.
 
-Use the declared Rust toolchain, then `cargo test --locked` and
-`cargo clippy --locked --all-targets -- -D warnings`. The binary is built with
-`cargo build --locked --bin zix-wordpress`.
+Use the declared Rust toolchain, then `cargo test --locked --all-features` and
+`cargo clippy --locked --all-targets --all-features -- -D warnings`. Linux builds
+with `os-keyring` need the native libsecret development package. The CI release
+contains the OS-custody-enabled GNU/Linux executable, dependency notices,
+extension manifest, source binding and checksums; native GLib/libsecret remain
+OS-managed runtime dependencies. Version tags publish through owner CI/OIDC.
 
 ## Connection
 
@@ -16,9 +19,29 @@ Use WordPress core's Application Password screen to approve an application for
 a suitably restricted user. Do not provide the user's main login password,
 extract browser cookies or install an authentication plugin.
 
-The trusted local host supplies `ZIX_WORDPRESS_USERNAME` and
-`ZIX_WORDPRESS_APPLICATION_PASSWORD` only to the command's environment. Do not
-put credentials in argv, Git, profiles, model prompts or logs.
+For OS custody, provision an encrypted persistent Secret Service collection
+using the OS provider, then explicitly unlock and enroll it. Credentials are
+read as `{username,password}` JSON from stdin for import, never as arguments.
+Use a trusted local hidden-input host, not a shell literal/history or LLM prompt.
+
+```text
+zix-wordpress credential-unlock <profile-id> https://example.com <collection>
+zix-wordpress credential-import <profile-id> https://example.com <collection>
+zix-wordpress credential-status <profile-id> https://example.com <collection>
+zix-wordpress credential-lock <profile-id> https://example.com <collection>
+```
+
+Set the non-secret `ZIX_WORDPRESS_COLLECTION` alias for subsequent commands.
+The credential is bound to both profile and exact origin; it is not obtained
+from a profile file. Locked/missing/unavailable custody fails without falling
+back to password environment variables. Unlocking affects the selected whole
+collection and does not approve a write. `credential-forget` removes only the
+local entry, not the remote Application Password. No secret-export CLI exists.
+Software keyrings do not isolate malicious processes running as the same user.
+
+An explicit ephemeral host may instead supply `ZIX_WORDPRESS_USERNAME` and
+`ZIX_WORDPRESS_APPLICATION_PASSWORD` when no collection is selected. Keep them
+out of argv, Git, profiles, model prompts and logs.
 
 ```text
 zix-wordpress login <profile-id> https://example.com
@@ -61,9 +84,13 @@ draft operations, so it is not presented as a write adapter.
 
 This is not browser `/wp-admin` session automation. It does not reuse browser
 cookies. Browser dashboard login and the API's management operations require
-separate live evidence. There is no persistent credential custody in this initial
-slice. Browser callback authorization, remote revoke, existing-draft updates,
-publish, media and installed `zix wordpress` protocol integration remain #160.
+separate live evidence. Browser callback authorization, remote revoke,
+existing-draft updates, publish and media remain #160. Register the downloaded
+`wordpress.extension.json` and executable with their verified hashes using
+`zix extensions add`. The read-only installed extension requires a dispatcher
+supporting explicit session-bus opt-in. It exposes `zix wordpress status`,
+`zix wordpress posts list` and `zix wordpress pages list` with required
+`--profile`, `--origin`, `--collection` arguments. It never auto-unlocks.
 Writes are not registered as read-only commands in the common dispatcher.
 
 No hosting, plugin, theme, IAM, DNS or production content is configured by tests.
