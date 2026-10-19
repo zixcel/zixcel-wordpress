@@ -1,4 +1,4 @@
-use crate::{ContentSummary, Draft, Error, Result};
+use crate::{ContentItem, ContentSummary, Error, Result};
 use serde_json::Value;
 pub(crate) fn parse_summary(value: &Value) -> Result<ContentSummary> {
     let id = value
@@ -25,14 +25,14 @@ pub(crate) fn parse_summary(value: &Value) -> Result<ContentSummary> {
         .to_owned();
     Ok(ContentSummary { id, status, title })
 }
-pub(crate) fn parse_draft(value: &Value) -> Result<Draft> {
+pub(crate) fn parse_content(value: &Value) -> Result<ContentItem> {
     let summary = parse_summary(value)?;
     let content = value
         .pointer("/content/raw")
         .and_then(Value::as_str)
         .ok_or(Error::InvalidResponse)?
         .to_owned();
-    Ok(Draft {
+    Ok(ContentItem {
         id: summary.id,
         status: summary.status,
         title: summary.title,

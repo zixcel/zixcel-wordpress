@@ -1,6 +1,7 @@
-use crate::response::{parse_draft, parse_summary};
+use crate::response::{parse_content, parse_summary};
 use crate::{
-    ContentKind, ContentSummary, Draft, Error, Method, Permission, Result, Transport, WordPress,
+    ContentItem, ContentKind, ContentSummary, Error, Method, Permission, Result, Transport,
+    WordPress,
 };
 use serde_json::json;
 impl<T: Transport> WordPress<T> {
@@ -16,7 +17,7 @@ impl<T: Transport> WordPress<T> {
             .ok_or(Error::InvalidResponse)?;
         rows.iter().map(parse_summary).collect()
     }
-    pub fn get(&mut self, kind: ContentKind, id: u64) -> Result<Draft> {
+    pub fn get(&mut self, kind: ContentKind, id: u64) -> Result<ContentItem> {
         if id == 0 {
             return Err(Error::InvalidInput);
         }
@@ -35,7 +36,7 @@ impl<T: Transport> WordPress<T> {
         kind: ContentKind,
         title: &str,
         content: &str,
-    ) -> Result<Draft> {
+    ) -> Result<ContentItem> {
         let value = self
             .transport
             .request(
@@ -48,9 +49,9 @@ impl<T: Transport> WordPress<T> {
                 true,
             )
             .map_err(|_| Error::UnknownResult)?;
-        parse_draft(&value).map_err(|_| Error::UnknownResult)
+        parse_content(&value).map_err(|_| Error::UnknownResult)
     }
-    pub(crate) fn read(&mut self, kind: ContentKind, id: u64) -> Result<Draft> {
+    pub(crate) fn read(&mut self, kind: ContentKind, id: u64) -> Result<ContentItem> {
         let value = self.transport.request(
             Method::Get,
             &format!(
@@ -60,6 +61,6 @@ impl<T: Transport> WordPress<T> {
             None,
             true,
         )?;
-        parse_draft(&value)
+        parse_content(&value)
     }
 }
