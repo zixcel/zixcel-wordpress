@@ -13,6 +13,7 @@ mod provider_error;
 mod provider_invoke;
 mod provider_manifest;
 mod provider_ops;
+mod provider_plan;
 mod provider_receipt;
 mod redaction;
 use serde_json::json;

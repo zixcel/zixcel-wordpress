@@ -2,23 +2,7 @@ use crate::provider_ops::{Mode, Op};
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
 use zix_operation_contracts::{Binding, LocalPlan};
-use zixcel_wordpress::{ContentPlan, DraftPlan, Error, Result, RevokePlan, UploadPlan};
-fn inner_digest(native: &str, payload: &Value) -> Result<String> {
-    macro_rules! parse {
-        ($t:ty) => {
-            serde_json::from_value::<$t>(payload.clone())
-                .map_err(|_| Error::InvalidInput)?
-                .digest()
-        };
-    }
-    match native {
-        "draft-apply" => parse!(DraftPlan),
-        "content-apply" => parse!(ContentPlan),
-        "media-apply" => parse!(UploadPlan),
-        "revoke-apply" => parse!(RevokePlan),
-        _ => Err(Error::InvalidInput),
-    }
-}
+use zixcel_wordpress::{Error, Result};
 pub(crate) fn invoke<F>(
     op: &Op,
     values: &BTreeMap<String, String>,
@@ -97,7 +81,7 @@ where
                 if let Some(file) = values.get("file") {
                     args.push(file.clone());
                 }
-                args.push(inner_digest(op.native, &plan.plan)?);
+                args.push(crate::provider_plan::inner_digest(op.native, &plan.plan)?);
                 args.push(get("journal-directory")?.into());
             }
             input = Some(serde_json::to_vec(&plan.plan).map_err(|_| Error::InvalidInput)?);
