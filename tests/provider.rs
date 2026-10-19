@@ -32,7 +32,23 @@ fn request(value: &Value) -> Output {
 fn valid() -> Value {
     json!({"schema":"zix-provider/v1","id":"a".repeat(32),"operation":"wordpress.login",
         "arguments":{"profile":"example-site","origin":"https://site.example.test","collection":"default"},
-        "limits":{"timeout_ms":40000,"maximum_response_bytes":131072}})
+        "limits":{"timeout_ms":40000,"maximum_response_bytes":131072},"binding":binding()})
+}
+fn binding() -> zix_operation_contracts::Binding {
+    use sha2::{Digest, Sha256};
+    let path = env!("CARGO_BIN_EXE_zix-wordpress");
+    let out = Command::new(path).arg("--manifest").output().unwrap();
+    let manifest: Value = serde_json::from_slice(&out.stdout).unwrap();
+    let hash: String = Sha256::digest(std::fs::read(path).unwrap())
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect();
+    zix_operation_contracts::Binding::for_catalog(
+        "zixcel-wordpress",
+        env!("CARGO_PKG_VERSION"),
+        &manifest,
+        &hash,
+    )
 }
 #[test]
 fn only_built_capabilities_are_advertised_without_credentials() {
@@ -54,7 +70,7 @@ fn only_built_capabilities_are_advertised_without_credentials() {
                 .as_array()
                 .unwrap()
                 .iter()
-                .all(|c| c["effect"] == "read")
+                .all(|c| c["effect"] == "read" || c["effect"] == "operator-write")
         );
     } else {
         assert!(!out.status.success());
@@ -70,7 +86,7 @@ fn unsupported_operations_and_protocol_mutations_cannot_trigger_an_operation() {
         assert!(out.stdout.is_empty());
     }
     let mut value = valid();
-    value["operation"] = json!("wordpress.draft-apply");
+    value["operation"] = json!("wordpress.destroy");
     assert!(!request(&value).status.success());
 }
 #[test]
@@ -78,7 +94,7 @@ fn unavailable_custody_never_falls_back_to_password_environment_or_leaks_it() {
     let out = request(&valid());
     assert!(out.status.success());
     let value: Value = serde_json::from_slice(&out.stdout).unwrap();
-    assert_eq!(value["error"], "wordpress_operation_failed");
+    assert_eq!(value["error"], "custody_or_local_state_unavailable");
     for bytes in [&out.stdout, &out.stderr] {
         assert!(!String::from_utf8_lossy(bytes).contains("synthetic-legacy-password"));
     }

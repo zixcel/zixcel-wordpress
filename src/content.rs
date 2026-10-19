@@ -22,7 +22,11 @@ impl<T: Transport> WordPress<T> {
             return Err(Error::InvalidInput);
         }
         self.require(kind)?;
-        self.read(kind, id)
+        let item = self.read(kind, id)?;
+        if item.id != id {
+            return Err(Error::InvalidResponse);
+        }
+        Ok(item)
     }
     pub(crate) fn require(&mut self, kind: ContentKind) -> Result<Permission> {
         let permission = self.login()?;

@@ -19,6 +19,7 @@ pub fn apply_draft<T: Transport>(
     }
     let mut journal = crate::journal::Journal::begin(journal, &digest)?;
     let created = client.create(plan.kind, &plan.title, &plan.content)?;
+    journal.accepted(&plan.profile.origin, created.id, &digest)?;
     if created.status != "draft" {
         return Err(Error::UnknownResult);
     }

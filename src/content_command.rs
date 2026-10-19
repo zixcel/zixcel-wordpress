@@ -21,15 +21,16 @@ pub(crate) fn run<T: Transport>(
     client: &mut WordPress<T>,
     args: &[String],
     now: u64,
+    source: Option<&[u8]>,
 ) -> Result<Value> {
     match args[0].as_str() {
         "content-plan" if args.len() == 3 => {
-            let input: Input = crate::input::input()?;
+            let input: Input = crate::input::decode(source)?;
             let plan = plan_content(client, input.kind, input.effect, input.after, now, nonce()?)?;
             Ok(json!({"sha256":plan.digest()?,"plan":plan}))
         }
         "content-apply" if args.len() == 5 => {
-            let plan: ContentPlan = crate::input::input()?;
+            let plan: ContentPlan = crate::input::decode(source)?;
             serde_json::to_value(apply_content(
                 client,
                 &plan,
@@ -40,10 +41,10 @@ pub(crate) fn run<T: Transport>(
             .map_err(|_| Error::InvalidResponse)
         }
         "content-reconcile" if args.len() == 3 => {
-            let plan: ContentPlan = crate::input::input()?;
+            let plan: ContentPlan = crate::input::decode(source)?;
             serde_json::to_value(reconcile_content(client, &plan)?)
                 .map_err(|_| Error::InvalidResponse)
         }
-        _ => crate::media_command::run(client, args, now),
+        _ => crate::media_command::run(client, args, now, source),
     }
 }

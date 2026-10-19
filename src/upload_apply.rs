@@ -35,6 +35,7 @@ pub fn apply_upload<T: Transport>(
         .map_err(|_| Error::UnknownResult)?;
     let created =
         crate::media::parse(&v, &plan.profile.origin).map_err(|_| Error::UnknownResult)?;
+    journal.accepted(&plan.profile.origin, created.id, &digest)?;
     let observed = client
         .media_read(created.id)
         .map_err(|_| Error::UnknownResult)?;

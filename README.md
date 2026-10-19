@@ -11,6 +11,9 @@ contains the OS-custody-enabled GNU/Linux executable, dependency notices,
 extension manifest, source binding and checksums; native GLib/libsecret remain
 OS-managed runtime dependencies. Version tags publish through owner CI/OIDC.
 
+Main may contain unreleased operations. The official release’s bundled manifest/help
+is the authority for that archive; source changes do not update a published binary.
+
 ## Connection
 
 `zix-wordpress discover <profile-id> https://example.com` performs anonymous core
@@ -89,8 +92,8 @@ a writer can still race between the final read and POST.
 the desired state, unchanged snapshot or conflicting state is present. Matching
 state does not prove which actor wrote it and never removes the replay barrier.
 Lost write responses and mismatching read-back remain unknown. Reconciliation
-never retries, publishes or rolls back. Installed zix mutation routing remains a
-separate implementation; these are explicit native commands.
+never retries, publishes or rolls back. The installed adapter binds these plans to its canonical operation, catalog,
+package version and actual executable. Explicit native commands remain available.
 
 ## Media
 
@@ -147,12 +150,52 @@ This is not browser `/wp-admin` session automation. It does not reuse browser
 cookies. Browser dashboard login and the API's management operations require
 separate live evidence. Installed command integration is tracked separately. Register the downloaded
 `wordpress.extension.json` and executable with their verified hashes using
-`zix extensions add`. The read-only installed extension requires a dispatcher
+`zix extensions add`. The v2 installed extension requires a dispatcher
 supporting explicit session-bus opt-in. It exposes `zix wordpress status`,
 `zix wordpress posts list` and `zix wordpress pages list` with required
 `--profile`, `--origin`, `--collection` arguments. It never auto-unlocks.
-Writes are not registered as read-only commands in the common dispatcher.
+Writes are declared `operator-write`, never read-only. They require a private
+plan file, its exact hash, a private journal and an interactive terminal confirmation
+in the dispatcher; unattended invocation stops before the provider is launched.
+This local operator workflow is not signed independent authority or isolation from
+malicious code/PTYs running as the same OS user. Remote unattended write authority
+is a separate Crowsi integration and is not provided by a hash flag.
 
 No hosting, plugin, theme, IAM, DNS or production content is configured by tests.
 Synthetic tests are not evidence of a customer's successful login or mutation.
 See [security boundaries](SECURITY.md) for implementation and verification limits.
+
+## Installed command plans
+
+`zix wordpress posts list --page 2` and `pages list` support explicit pages;
+`posts get`, `pages get`, `media list --page` and `media get --id` retrieve only
+selected resources. All commands also require profile/origin/collection. Discovery
+comes from the same typed operation catalog used by execution.
+
+Use `draft plan`, `content plan` or `media plan` with `--input-file` (typed JSON;
+media also requires `--file`) to obtain a `zix-local-operation/v1` plan and hash.
+`auth revoke-plan` needs no extra input. Save the returned `plan` as a private
+0600 file. The corresponding `draft apply`, `content apply`, `media apply` or
+`auth revoke-apply` takes `--plan-file`, `--approval-sha256` and
+`--journal-directory` (media also `--file`). Review the file first, then confirm
+its current hash at the dispatcher's terminal prompt. Do not send real secrets
+as inputs or approve a plan merely because an agent supplies its hash.
+
+The wrapper binds source executable/catalog/version/canonical operation and the
+provider repeats these checks before loading the inner typed plan. Catalog or
+binary changes invalidate prior plans. Plan/payload/target drift, expiration and
+replay are refused. `content reconcile --plan-file` is observation-only and never
+removes replay barriers or claims which writer produced an observed state.
+
+### Development process acceptance
+
+The `contract-fixture` feature builds two test-only executables, never selected by
+release packaging. They run the real dispatcher, provider protocol, typed command
+router and backend, with only the HTTP transport replaced by synthetic responses.
+Their host accepts only the reserved example profile/origin and synthetic collection;
+it neither loads real custody credentials nor connects to a WordPress server.
+`cargo test --locked --all-features --test installed_flow` verifies unpacked process
+registration/discovery, explicit paging/get, plan creation, real terminal confirmation,
+apply/read-back, confirmed replay refusal, media and credential-revocation contracts.
+The GNOME keyring test runs separately against an isolated real OS provider. Neither
+fixture success nor package inspection is described as a real-site write acceptance.

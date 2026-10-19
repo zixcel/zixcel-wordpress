@@ -27,3 +27,12 @@ pub(crate) fn read(path: &str) -> Result<Vec<u8>> {
     }
     Ok(bytes)
 }
+
+pub(crate) fn plan(path: &str) -> Result<Vec<u8>> {
+    use std::os::unix::fs::PermissionsExt;
+    let meta = std::fs::symlink_metadata(path).map_err(|_| Error::LocalState)?;
+    if meta.permissions().mode() & 0o077 != 0 || meta.len() > 1048576 {
+        return Err(Error::LocalState);
+    }
+    read(path)
+}

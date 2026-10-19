@@ -34,6 +34,7 @@ pub fn apply_content<T: Transport>(
         &format!("/wp-json/wp/v2/{}/{}", plan.kind.path(), plan.after.id),
         Some(&serde_json::json!({"title":plan.after.title,"content":plan.after.content,"status":plan.after.status})), true)
         .map_err(|_| Error::UnknownResult)?;
+    journal.accepted(&plan.profile.origin, plan.after.id, &digest)?;
     let observed = client
         .snapshot(plan.kind, plan.after.id)
         .map_err(|_| Error::UnknownResult)?;

@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 mod auth_command;
 mod command;
+mod command_ops;
 mod content_command;
 mod credentials;
 mod help;
@@ -8,6 +9,10 @@ mod input;
 mod local_file;
 mod media_command;
 mod provider;
+mod provider_error;
+mod provider_invoke;
+mod provider_manifest;
+mod provider_ops;
 mod redaction;
 use serde_json::json;
 use std::process::ExitCode;
