@@ -1,0 +1,27 @@
+[package]
+name = "zixcel-wordpress"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+license = "Apache-2.0"
+repository = "https://github.com/zixcel/zixcel-wordpress"
+description = "Origin-bound WordPress core authentication and explicit draft operations"
+publish = false
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+url = "2.5"
+reqwest = { version = "0.13.3", default-features = false, features = ["blocking", "rustls", "json"] }
+zeroize = "1.9"
+base64 = "0.22"
+sha2 = "0.11"
+crowsi-transport-foundation = { git = "https://github.com/crowsi-net/crowsi-transport-foundation", rev = "f5edce4df5b58e90224ad05390d79fe2f571b4a5", features = ["http-contract"] }
+[dev-dependencies]
+tempfile = "3.27"
+[lints.rust]
+unsafe_code = "forbid"
+[lints.clippy]
+all = "warn"
+[[bin]]
+name = "zix-wordpress"
+path = "src/main.rs"

@@ -1,0 +1,91 @@
+use crate::input::{DraftInput, input};
+use serde_json::json;
+use std::{
+    io::Read,
+    path::Path,
+    time::{SystemTime, UNIX_EPOCH},
+};
+use zeroize::Zeroizing;
+use zixcel_wordpress::{
+    ContentKind, DraftPlan, Error, Https, Profile, Result, WordPress, apply_draft, plan_draft,
+};
+pub(crate) fn run() -> Result<serde_json::Value> {
+    let args = std::env::args().skip(1).collect::<Vec<_>>();
+    if args == ["--version"] {
+        return Ok(json!({"package":"zixcel-wordpress","version":env!("CARGO_PKG_VERSION")}));
+    }
+    if args.len() < 3 {
+        return Err(Error::InvalidInput);
+    }
+    let profile = Profile {
+        id: args[1].clone(),
+        origin: args[2].clone(),
+    };
+    profile.validate()?;
+    if args[0] == "discover" && args.len() == 3 {
+        let mut client =
+            WordPress::new(profile.clone(), Https::new(&profile, "unused", "unused")?)?;
+        return serde_json::to_value(client.discover()?).map_err(|_| Error::InvalidResponse);
+    }
+    let username = Zeroizing::new(
+        std::env::var("ZIX_WORDPRESS_USERNAME").map_err(|_| Error::InvalidCredential)?,
+    );
+    let password = Zeroizing::new(
+        std::env::var("ZIX_WORDPRESS_APPLICATION_PASSWORD")
+            .map_err(|_| Error::InvalidCredential)?,
+    );
+    let mut client = WordPress::new(profile.clone(), Https::new(&profile, &username, &password)?)?;
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map_err(|_| Error::LocalState)?
+        .as_secs();
+    let result = match args[0].as_str() {
+        "login" if args.len() == 3 => serde_json::to_value(client.login()?),
+        "posts-list" if args.len() == 3 => {
+            serde_json::to_value(client.list(ContentKind::Posts, 1)?)
+        }
+        "pages-list" if args.len() == 3 => {
+            serde_json::to_value(client.list(ContentKind::Pages, 1)?)
+        }
+        "draft-plan" if args.len() == 3 => {
+            let value: DraftInput = input()?;
+            let mut random = [0u8; 16];
+            std::fs::File::open("/dev/urandom")
+                .and_then(|mut f| f.read_exact(&mut random))
+                .map_err(|_| Error::LocalState)?;
+            let nonce = random
+                .iter()
+                .map(|n| format!("{n:02x}"))
+                .collect::<String>();
+            let plan = plan_draft(
+                &mut client,
+                value.kind,
+                value.title,
+                value.content,
+                now,
+                nonce,
+            )?;
+            Ok(json!({"plan":plan,"sha256":plan.digest()?}))
+        }
+        "draft-apply" if args.len() == 5 => {
+            let plan: DraftPlan = input()?;
+            serde_json::to_value(apply_draft(
+                &mut client,
+                &plan,
+                &args[3],
+                now,
+                Path::new(&args[4]),
+            )?)
+        }
+        _ => return Err(Error::InvalidInput),
+    }
+    .map_err(|_| Error::InvalidResponse)?;
+    let encoded = serde_json::to_string(&result).map_err(|_| Error::InvalidResponse)?;
+    if [&*password]
+        .iter()
+        .any(|secret| !secret.is_empty() && encoded.contains(*secret))
+    {
+        return Err(Error::InvalidResponse);
+    }
+    Ok(result)
+}
