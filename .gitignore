@@ -1,0 +1,7 @@
+/target/
+/.local/
+/state/
+/credentials/
+.env
+.env.*
+*.log
