@@ -16,7 +16,8 @@ pub(crate) fn allowed(method: Method, path: &str) -> bool {
                     .is_ok_and(|page| (1..=100).contains(&page)),
                 "_fields" => matches!(
                     value.as_ref(),
-                    "id,capabilities"
+                    "id,source_url,mime_type,alt_text"
+                        | "id,capabilities"
                         | "id,status,title.raw"
                         | "id,status,title.raw,content.raw"
                         | "id,status,title.raw,content.raw,modified_gmt"
@@ -34,7 +35,7 @@ pub(crate) fn allowed(method: Method, path: &str) -> bool {
         return false;
     };
     suffix == "users/me" && method == Method::Get
-        || ["posts", "pages"].iter().any(|kind| {
+        || ["posts", "pages", "media"].iter().any(|kind| {
             suffix == *kind
                 || suffix
                     .strip_prefix(&format!("{kind}/"))
