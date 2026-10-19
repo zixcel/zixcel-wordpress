@@ -3,6 +3,8 @@
 mod apply;
 mod client;
 mod content;
+#[cfg(all(target_os = "linux", feature = "os-keyring"))]
+pub mod custody;
 mod model;
 mod network;
 mod plan;

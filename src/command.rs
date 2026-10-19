@@ -5,12 +5,23 @@ use std::{
     path::Path,
     time::{SystemTime, UNIX_EPOCH},
 };
-use zeroize::Zeroizing;
 use zixcel_wordpress::{
     ContentKind, DraftPlan, Error, Https, Profile, Result, WordPress, apply_draft, plan_draft,
 };
 pub(crate) fn run() -> Result<serde_json::Value> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
+    if args == ["--help"] || args == ["help"] {
+        return Ok(crate::help::describe());
+    }
+    if args == ["--manifest"] {
+        return crate::provider::manifest();
+    }
+    if args == ["--zix-provider-v1"] {
+        return crate::provider::run();
+    }
+    execute(&args, None)
+}
+pub(crate) fn execute(args: &[String], collection: Option<&str>) -> Result<serde_json::Value> {
     if args == ["--version"] {
         return Ok(json!({"package":"zixcel-wordpress","version":env!("CARGO_PKG_VERSION")}));
     }
@@ -22,18 +33,15 @@ pub(crate) fn run() -> Result<serde_json::Value> {
         origin: args[2].clone(),
     };
     profile.validate()?;
+    if args[0].starts_with("credential-") {
+        return crate::credentials::manage(&profile, args);
+    }
     if args[0] == "discover" && args.len() == 3 {
         let mut client =
             WordPress::new(profile.clone(), Https::new(&profile, "unused", "unused")?)?;
         return serde_json::to_value(client.discover()?).map_err(|_| Error::InvalidResponse);
     }
-    let username = Zeroizing::new(
-        std::env::var("ZIX_WORDPRESS_USERNAME").map_err(|_| Error::InvalidCredential)?,
-    );
-    let password = Zeroizing::new(
-        std::env::var("ZIX_WORDPRESS_APPLICATION_PASSWORD")
-            .map_err(|_| Error::InvalidCredential)?,
-    );
+    let (username, password) = crate::credentials::load(&profile, &args[0], collection)?;
     let mut client = WordPress::new(profile.clone(), Https::new(&profile, &username, &password)?)?;
     let now = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -89,11 +97,7 @@ pub(crate) fn run() -> Result<serde_json::Value> {
         _ => return Err(Error::InvalidInput),
     }
     .map_err(|_| Error::InvalidResponse)?;
-    let encoded = serde_json::to_string(&result).map_err(|_| Error::InvalidResponse)?;
-    if [&*password]
-        .iter()
-        .any(|secret| !secret.is_empty() && encoded.contains(*secret))
-    {
+    if crate::redaction::reflected(&result, &username, &password) {
         return Err(Error::InvalidResponse);
     }
     Ok(result)
