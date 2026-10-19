@@ -51,8 +51,8 @@ pub(crate) fn run() -> Result<Value> {
         Ok(value) => {
             json!({"schema":"zix-provider/v1","id":r.id,"operation":r.operation,"result":value})
         }
-        Err(_) => {
-            json!({"schema":"zix-provider/v1","id":r.id,"operation":r.operation,"error":"wordpress_operation_failed"})
+        Err(error) => {
+            json!({"schema":"zix-provider/v1","id":r.id,"operation":r.operation,"error":crate::provider_error::code(error)})
         }
     };
     if serde_json::to_vec(&response)
