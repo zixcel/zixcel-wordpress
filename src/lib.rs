@@ -12,7 +12,7 @@ mod routes;
 mod transport;
 pub use apply::apply_draft;
 pub use client::WordPress;
-pub use model::{ContentKind, Discovery, Draft, Permission, Profile};
+pub use model::{ContentItem, ContentKind, ContentSummary, Discovery, Permission, Profile};
 pub use network::public_address;
 pub use plan::{DraftPlan, DraftReceipt, plan_draft};
 pub use transport::{Https, Method, Transport};

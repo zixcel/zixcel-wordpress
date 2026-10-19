@@ -64,9 +64,16 @@ pub struct Permission {
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
-pub struct Draft {
+pub struct ContentItem {
     pub id: u64,
     pub status: String,
     pub title: String,
     pub content: String,
+}
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct ContentSummary {
+    pub id: u64,
+    pub status: String,
+    pub title: String,
 }

@@ -24,7 +24,15 @@ put credentials in argv, Git, profiles, model prompts or logs.
 zix-wordpress login <profile-id> https://example.com
 zix-wordpress posts-list <profile-id> https://example.com
 zix-wordpress pages-list <profile-id> https://example.com
+zix-wordpress posts-get <profile-id> https://example.com <id>
+zix-wordpress pages-get <profile-id> https://example.com <id>
 ```
+
+Lists are explicit pages of at most 25 summaries (id, status and raw title), never
+bulk article bodies. `get` retrieves one selected raw article. Nested `_fields`
+avoid rendering and transferring unneeded HTML. All responses retain the same
+1 MiB transport limit; an oversized article is reported rather than silently
+raising the limit or retrying. A first-page read is not a complete site export.
 
 Login verifies core discovery and authenticated `/users/me?context=edit`.
 Application Password authentication grants that user's WordPress permissions;
