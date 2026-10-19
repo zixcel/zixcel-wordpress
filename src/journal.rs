@@ -42,6 +42,13 @@ impl Journal {
             .map_err(|_| Error::LocalState)?;
         Ok(Self(file))
     }
+    pub(crate) fn accepted(&mut self, origin: &str, id: u64, digest: &str) -> Result<()> {
+        self.finish(
+            &serde_json::json!({"state":"accepted; do not replay","origin":origin,
+            "id":id,"plan_sha256":digest,"read_back":false}),
+        )
+        .map_err(|_| Error::UnknownResult)
+    }
     pub(crate) fn finish(&mut self, receipt: &impl serde::Serialize) -> Result<()> {
         let bytes = serde_json::to_vec(receipt).map_err(|_| Error::LocalState)?;
         self.0
