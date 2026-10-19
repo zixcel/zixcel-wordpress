@@ -1,7 +1,6 @@
 use crate::input::{DraftInput, input};
 use serde_json::json;
 use std::{
-    io::Read,
     path::Path,
     time::{SystemTime, UNIX_EPOCH},
 };
@@ -66,14 +65,7 @@ pub(crate) fn execute(args: &[String], collection: Option<&str>) -> Result<serde
         }
         "draft-plan" if args.len() == 3 => {
             let value: DraftInput = input()?;
-            let mut random = [0u8; 16];
-            std::fs::File::open("/dev/urandom")
-                .and_then(|mut f| f.read_exact(&mut random))
-                .map_err(|_| Error::LocalState)?;
-            let nonce = random
-                .iter()
-                .map(|n| format!("{n:02x}"))
-                .collect::<String>();
+            let nonce = crate::content_command::nonce()?;
             let plan = plan_draft(
                 &mut client,
                 value.kind,
@@ -94,7 +86,7 @@ pub(crate) fn execute(args: &[String], collection: Option<&str>) -> Result<serde
                 Path::new(&args[4]),
             )?)
         }
-        _ => return Err(Error::InvalidInput),
+        _ => Ok(crate::content_command::run(&mut client, args, now)?),
     }
     .map_err(|_| Error::InvalidResponse)?;
     if crate::redaction::reflected(&result, &username, &password) {

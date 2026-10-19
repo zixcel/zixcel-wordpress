@@ -74,6 +74,24 @@ A durable exclusive journal is synced before POST. An uncertain result, partial
 read-back or existing journal blocks replay across restarts. Reconcile with the
 server before choosing further actions; a new plan is not an automatic retry.
 
+## Editing and publication
+
+`content-plan PROFILE ORIGIN` takes `{kind,effect,after}` JSON: `after` contains
+`id,status,title,content`; effects are `edit_draft`, `publish`, `edit_published`.
+The plan records the authenticated user and observed item/modified timestamp.
+Review the whole before/after and effect; `content-apply PROFILE ORIGIN HASH
+PRIVATE_JOURNAL_DIRECTORY` takes the exact plan on stdin. It checks current
+permissions and pre-existing content/timestamp before writing and then reads back.
+Drift is a conflict, not permission to overwrite. Core REST is not atomic CAS:
+a writer can still race between the final read and POST.
+
+`content-reconcile PROFILE ORIGIN` takes a prior plan and only observes whether
+the desired state, unchanged snapshot or conflicting state is present. Matching
+state does not prove which actor wrote it and never removes the replay barrier.
+Lost write responses and mismatching read-back remain unknown. Reconciliation
+never retries, publishes or rolls back. Installed zix mutation routing remains a
+separate implementation; these are explicit native commands.
+
 ## Boundaries and remaining work
 
 The Crowsi bounded sensitive-body collector is reused. The transport owns Basic
