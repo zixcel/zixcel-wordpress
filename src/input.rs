@@ -12,10 +12,10 @@ pub(crate) struct DraftInput {
 pub(crate) fn input<T: serde::de::DeserializeOwned>() -> Result<T> {
     let mut bytes = Zeroizing::new(Vec::new());
     io::stdin()
-        .take(70001)
+        .take(1048577)
         .read_to_end(&mut bytes)
         .map_err(|_| Error::InvalidInput)?;
-    if bytes.len() > 70000 {
+    if bytes.len() > 1048576 {
         return Err(Error::InvalidInput);
     }
     serde_json::from_slice(&bytes).map_err(|_| Error::InvalidInput)

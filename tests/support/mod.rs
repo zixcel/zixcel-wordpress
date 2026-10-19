@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+pub mod mutations;
 use serde_json::{Value, json};
 use std::{cell::RefCell, collections::VecDeque, rc::Rc};
 use zixcel_wordpress::*;
@@ -23,7 +24,10 @@ impl Transport for Fake {
             .borrow_mut()
             .push((method, path.into(), authenticated));
         if method == Method::Post {
-            assert_eq!(body.unwrap()["status"], "draft");
+            assert!(matches!(
+                body.unwrap()["status"].as_str(),
+                Some("draft" | "publish")
+            ));
         }
         self.responses
             .pop_front()

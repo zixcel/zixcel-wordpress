@@ -16,7 +16,10 @@ pub(crate) fn allowed(method: Method, path: &str) -> bool {
                     .is_ok_and(|page| (1..=100).contains(&page)),
                 "_fields" => matches!(
                     value.as_ref(),
-                    "id,capabilities" | "id,status,title.raw" | "id,status,title.raw,content.raw"
+                    "id,capabilities"
+                        | "id,status,title.raw"
+                        | "id,status,title.raw,content.raw"
+                        | "id,status,title.raw,content.raw,modified_gmt"
                 ),
                 _ => false,
             }
@@ -36,7 +39,7 @@ pub(crate) fn allowed(method: Method, path: &str) -> bool {
                 || suffix
                     .strip_prefix(&format!("{kind}/"))
                     .is_some_and(|id| !id.is_empty() && id.bytes().all(|c| c.is_ascii_digit()))
-                    && method == Method::Get
+                    && matches!(method, Method::Get | Method::Post)
         })
 }
 #[cfg(test)]
@@ -49,7 +52,6 @@ mod tests {
             "/wp-json/wp/v2/users",
             "/wp-json/wp/v2/posts/../settings",
             "/wp-json/wp/v2/plugins",
-            "/wp-json/wp/v2/posts/1",
         ] {
             assert!(!allowed(Method::Post, path));
         }

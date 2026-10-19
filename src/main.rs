@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 mod command;
+mod content_command;
 mod credentials;
 mod help;
 mod input;

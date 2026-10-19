@@ -8,6 +8,9 @@ pub(crate) fn describe() -> Value {
         "posts-get PROFILE ORIGIN ID",
         "pages-get PROFILE ORIGIN ID",
         "draft-plan PROFILE ORIGIN (JSON stdin)",
+        "content-plan PROFILE ORIGIN (kind/effect/after JSON stdin)",
+        "content-apply PROFILE ORIGIN APPROVED_SHA256 PRIVATE_JOURNAL_DIRECTORY (plan JSON stdin)",
+        "content-reconcile PROFILE ORIGIN (plan JSON stdin; observation only)",
         "draft-apply PROFILE ORIGIN APPROVED_SHA256 PRIVATE_JOURNAL_DIRECTORY (plan JSON stdin)",
     ];
     if cfg!(all(target_os = "linux", feature = "os-keyring")) {
