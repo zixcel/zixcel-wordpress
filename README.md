@@ -109,6 +109,32 @@ media to a post or publish it. Subsequent attachments require a separate reviewe
 operation; failures never trigger an automatic delete/upload retry. A lost upload
 response leaves a durable unknown-result journal for operator reconciliation.
 
+## Explicit authorization and remote revocation
+
+Manual hidden import remains the default. On a core installation whose HTTP literal
+loopback redirect support has been independently confirmed, `login-browser PROFILE
+ORIGIN COLLECTION EXPECTED_USERNAME --interactive --loopback-supported` binds the
+listener first and prints a non-secret authorization URL for the user to open.
+It requires a terminal and an already unlocked OS collection; it never automates
+browser login or opens a browser in unattended execution. Unknown/older core versions
+keep manual import. The support flag is an operator selection, not server-version
+proof or permission to change WordPress settings.
+
+The single-use listener accepts only the exact IP/port/path/state, selected origin
+and username, with bounded headers/query and a three-minute expiry. It returns no
+credential to stdout/receipt. The new credential is verified using core discovery
+and authenticated capabilities before OS enrollment. Core currently redirects with
+credential query parameters: browser/proxy history may retain them, which cannot
+be erased or guaranteed absent by this local client. The response is no-store,
+no-referrer and redirects to a non-secret completion path; the listener then closes.
+Do not use this flow where the upstream query/history constraint is unacceptable.
+
+`auth-status` reads only the current Application Password identity. `revoke-plan`
+selects that exact credential/user, not an arbitrary token; `revoke-apply` requires
+its reviewed hash and private journal. It verifies core deletion and subsequent
+HTTP 401. A transport error is unknown, not proof of revocation and never a resend.
+Remote revocation does not erase OS custody; `credential-forget` remains separate.
+
 ## Boundaries and remaining work
 
 The Crowsi bounded sensitive-body collector is reused. The transport owns Basic
@@ -119,8 +145,7 @@ draft operations, so it is not presented as a write adapter.
 
 This is not browser `/wp-admin` session automation. It does not reuse browser
 cookies. Browser dashboard login and the API's management operations require
-separate live evidence. Browser callback authorization, remote revoke,
-further integration is tracked by the owner issues. Register the downloaded
+separate live evidence. Installed command integration is tracked separately. Register the downloaded
 `wordpress.extension.json` and executable with their verified hashes using
 `zix extensions add`. The read-only installed extension requires a dispatcher
 supporting explicit session-bus opt-in. It exposes `zix wordpress status`,

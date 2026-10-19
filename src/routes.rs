@@ -16,7 +16,8 @@ pub(crate) fn allowed(method: Method, path: &str) -> bool {
                     .is_ok_and(|page| (1..=100).contains(&page)),
                 "_fields" => matches!(
                     value.as_ref(),
-                    "id,source_url,mime_type,alt_text"
+                    "uuid,name"
+                        | "id,source_url,mime_type,alt_text"
                         | "id,capabilities"
                         | "id,status,title.raw"
                         | "id,status,title.raw,content.raw"
@@ -34,9 +35,15 @@ pub(crate) fn allowed(method: Method, path: &str) -> bool {
     let Some(suffix) = route.strip_prefix("/wp-json/wp/v2/") else {
         return false;
     };
+    if suffix == "users/me/application-passwords/introspect" {
+        return method == Method::Get;
+    }
+    if let Some(uuid) = suffix.strip_prefix("users/me/application-passwords/") {
+        return method == Method::Delete && crate::credential_identity::valid_uuid(uuid);
+    }
     suffix == "users/me" && method == Method::Get
         || ["posts", "pages", "media"].iter().any(|kind| {
-            suffix == *kind
+            suffix == *kind && matches!(method, Method::Get | Method::Post)
                 || suffix
                     .strip_prefix(&format!("{kind}/"))
                     .is_some_and(|id| !id.is_empty() && id.bytes().all(|c| c.is_ascii_digit()))

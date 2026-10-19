@@ -1,4 +1,5 @@
 #![forbid(unsafe_code)]
+mod auth_command;
 mod command;
 mod content_command;
 mod credentials;

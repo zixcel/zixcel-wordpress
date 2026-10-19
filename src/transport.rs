@@ -8,6 +8,7 @@ use zeroize::Zeroizing;
 pub enum Method {
     Get,
     Post,
+    Delete,
 }
 pub trait Transport {
     fn origin(&self) -> &str;

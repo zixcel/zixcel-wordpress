@@ -47,7 +47,7 @@ pub(crate) fn run<T: Transport>(
                 Path::new(&args[5]),
             )?)
         }
-        _ => return Err(Error::InvalidInput),
+        _ => return crate::auth_command::run(client, args, now),
     };
     result.map_err(|_| Error::InvalidResponse)
 }
