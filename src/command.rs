@@ -1,12 +1,6 @@
-use crate::input::{DraftInput, input};
 use serde_json::json;
-use std::{
-    path::Path,
-    time::{SystemTime, UNIX_EPOCH},
-};
-use zixcel_wordpress::{
-    ContentKind, DraftPlan, Error, Https, Profile, Result, WordPress, apply_draft, plan_draft,
-};
+use std::time::{SystemTime, UNIX_EPOCH};
+use zixcel_wordpress::{Error, Https, Profile, Result, WordPress};
 pub(crate) fn run() -> Result<serde_json::Value> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     if args == ["--help"] || args == ["help"] {
@@ -18,9 +12,13 @@ pub(crate) fn run() -> Result<serde_json::Value> {
     if args == ["--zix-provider-v1"] {
         return crate::provider::run();
     }
-    execute(&args, None)
+    execute(&args, None, None)
 }
-pub(crate) fn execute(args: &[String], collection: Option<&str>) -> Result<serde_json::Value> {
+pub(crate) fn execute(
+    args: &[String],
+    collection: Option<&str>,
+    source: Option<&[u8]>,
+) -> Result<serde_json::Value> {
     if args == ["--version"] {
         return Ok(json!({"package":"zixcel-wordpress","version":env!("CARGO_PKG_VERSION")}));
     }
@@ -49,49 +47,7 @@ pub(crate) fn execute(args: &[String], collection: Option<&str>) -> Result<serde
         .duration_since(UNIX_EPOCH)
         .map_err(|_| Error::LocalState)?
         .as_secs();
-    let result = match args[0].as_str() {
-        "login" if args.len() == 3 => serde_json::to_value(client.login()?),
-        "posts-list" if args.len() == 3 => {
-            serde_json::to_value(client.list(ContentKind::Posts, 1)?)
-        }
-        "pages-list" if args.len() == 3 => {
-            serde_json::to_value(client.list(ContentKind::Pages, 1)?)
-        }
-        "posts-get" | "pages-get" if args.len() == 4 => {
-            let id = args[3].parse::<u64>().map_err(|_| Error::InvalidInput)?;
-            let kind = if args[0] == "posts-get" {
-                ContentKind::Posts
-            } else {
-                ContentKind::Pages
-            };
-            serde_json::to_value(client.get(kind, id)?)
-        }
-        "draft-plan" if args.len() == 3 => {
-            let value: DraftInput = input()?;
-            let nonce = crate::content_command::nonce()?;
-            let plan = plan_draft(
-                &mut client,
-                value.kind,
-                value.title,
-                value.content,
-                now,
-                nonce,
-            )?;
-            Ok(json!({"plan":plan,"sha256":plan.digest()?}))
-        }
-        "draft-apply" if args.len() == 5 => {
-            let plan: DraftPlan = input()?;
-            serde_json::to_value(apply_draft(
-                &mut client,
-                &plan,
-                &args[3],
-                now,
-                Path::new(&args[4]),
-            )?)
-        }
-        _ => Ok(crate::content_command::run(&mut client, args, now)?),
-    }
-    .map_err(|_| Error::InvalidResponse)?;
+    let result = crate::command_ops::dispatch(&mut client, args, now, source)?;
     if crate::redaction::reflected(&result, &username, &password) {
         return Err(Error::InvalidResponse);
     }

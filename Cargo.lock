@@ -2266,7 +2266,7 @@ dependencies = [
 [[package]]
 name = "zix-cli"
 version = "0.2.0"
-source = "git+https://github.com/zixcel/cli?rev=3eedec27bad3a1856e174176bb0770081404483e#3eedec27bad3a1856e174176bb0770081404483e"
+source = "git+https://github.com/zixcel/cli?rev=f03584c875069187339f164b1c2d684e98b00bc0#f03584c875069187339f164b1c2d684e98b00bc0"
 dependencies = [
  "crowsi-process-adapter",
  "rustix",
@@ -2276,7 +2276,18 @@ dependencies = [
  "sha2 0.11.1",
  "tokio",
  "url",
+ "zix-operation-contracts",
  "zixcel-bounded-io",
+]
+
+[[package]]
+name = "zix-operation-contracts"
+version = "0.1.0"
+source = "git+https://github.com/zixcel/cli?rev=f03584c875069187339f164b1c2d684e98b00bc0#f03584c875069187339f164b1c2d684e98b00bc0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "sha2 0.11.1",
 ]
 
 [[package]]
@@ -2305,6 +2316,7 @@ dependencies = [
  "url",
  "zeroize",
  "zix-cli",
+ "zix-operation-contracts",
 ]
 
 [[package]]

@@ -7,6 +7,7 @@ pub(crate) fn run<T: Transport>(
     client: &mut WordPress<T>,
     args: &[String],
     now: u64,
+    source: Option<&[u8]>,
 ) -> Result<Value> {
     match args[0].as_str() {
         "auth-status" if args.len() == 3 => {
@@ -18,7 +19,7 @@ pub(crate) fn run<T: Transport>(
             Ok(json!({"sha256":p.digest()?,"plan":p}))
         }
         "revoke-apply" if args.len() == 5 => {
-            let p: RevokePlan = crate::input::input()?;
+            let p: RevokePlan = crate::input::decode(source)?;
             serde_json::to_value(apply_revoke(
                 client,
                 &p,

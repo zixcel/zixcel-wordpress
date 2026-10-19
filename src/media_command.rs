@@ -14,6 +14,7 @@ pub(crate) fn run<T: Transport>(
     client: &mut WordPress<T>,
     args: &[String],
     now: u64,
+    source: Option<&[u8]>,
 ) -> Result<Value> {
     let result = match args[0].as_str() {
         "media-list" if args.len() == 4 => serde_json::to_value(
@@ -23,7 +24,7 @@ pub(crate) fn run<T: Transport>(
             client.media_get(args[3].parse().map_err(|_| Error::InvalidInput)?)?,
         ),
         "media-plan" if args.len() == 4 => {
-            let input: Input = crate::input::input()?;
+            let input: Input = crate::input::decode(source)?;
             let bytes = crate::local_file::read(&args[3])?;
             let plan = plan_upload(
                 client,
@@ -36,7 +37,7 @@ pub(crate) fn run<T: Transport>(
             return Ok(json!({"sha256":plan.digest()?,"plan":plan}));
         }
         "media-apply" if args.len() == 6 => {
-            let plan: UploadPlan = crate::input::input()?;
+            let plan: UploadPlan = crate::input::decode(source)?;
             let bytes = crate::local_file::read(&args[3])?;
             serde_json::to_value(apply_upload(
                 client,
@@ -47,7 +48,7 @@ pub(crate) fn run<T: Transport>(
                 Path::new(&args[5]),
             )?)
         }
-        _ => return crate::auth_command::run(client, args, now),
+        _ => return crate::auth_command::run(client, args, now, source),
     };
     result.map_err(|_| Error::InvalidResponse)
 }
