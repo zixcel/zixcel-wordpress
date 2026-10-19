@@ -15,7 +15,10 @@ impl Context {
         let binary = directory.join("zix-wordpress-fixture");
         fs::copy(env!("CARGO_BIN_EXE_zix-wordpress-contract-probe"), &binary).unwrap();
         fs::set_permissions(&binary, fs::Permissions::from_mode(0o700)).unwrap();
-        let out = Command::new(&binary)
+        // Only the immutable build output is executed to obtain metadata.
+        // The unpacked copy is executed later through the dispatcher’s sealed snapshot.
+        // This avoids inherited writable-copy descriptors during parallel fork/exec.
+        let out = Command::new(env!("CARGO_BIN_EXE_zix-wordpress-contract-probe"))
             .arg("--manifest")
             .env_clear()
             .output()
