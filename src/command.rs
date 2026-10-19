@@ -47,6 +47,15 @@ pub(crate) fn run() -> Result<serde_json::Value> {
         "pages-list" if args.len() == 3 => {
             serde_json::to_value(client.list(ContentKind::Pages, 1)?)
         }
+        "posts-get" | "pages-get" if args.len() == 4 => {
+            let id = args[3].parse::<u64>().map_err(|_| Error::InvalidInput)?;
+            let kind = if args[0] == "posts-get" {
+                ContentKind::Posts
+            } else {
+                ContentKind::Pages
+            };
+            serde_json::to_value(client.get(kind, id)?)
+        }
         "draft-plan" if args.len() == 3 => {
             let value: DraftInput = input()?;
             let mut random = [0u8; 16];
