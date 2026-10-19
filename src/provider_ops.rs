@@ -25,8 +25,11 @@ macro_rules! op {
         }
     };
 }
+#[path = "provider_ops/plans.rs"]
 mod plans;
+#[path = "provider_ops/reads.rs"]
 mod reads;
+#[path = "provider_ops/writes.rs"]
 mod writes;
 pub(crate) fn ops() -> impl Iterator<Item = &'static Op> {
     reads::OPS.iter().chain(plans::OPS).chain(writes::OPS)

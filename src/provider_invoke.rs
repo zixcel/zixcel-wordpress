@@ -114,4 +114,5 @@ where
 }
 
 #[cfg(test)]
+#[path = "provider_invoke/tests/mod.rs"]
 mod tests;

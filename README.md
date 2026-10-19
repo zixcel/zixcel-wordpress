@@ -11,6 +11,9 @@ contains the OS-custody-enabled GNU/Linux executable, dependency notices,
 extension manifest, source binding and checksums; native GLib/libsecret remain
 OS-managed runtime dependencies. Version tags publish through owner CI/OIDC.
 
+Main may contain unreleased operations. The official release’s bundled manifest/help
+is the authority for that archive; source changes do not update a published binary.
+
 ## Connection
 
 `zix-wordpress discover <profile-id> https://example.com` performs anonymous core
@@ -183,3 +186,16 @@ provider repeats these checks before loading the inner typed plan. Catalog or
 binary changes invalidate prior plans. Plan/payload/target drift, expiration and
 replay are refused. `content reconcile --plan-file` is observation-only and never
 removes replay barriers or claims which writer produced an observed state.
+
+### Development process acceptance
+
+The `contract-fixture` feature builds two test-only executables, never selected by
+release packaging. They run the real dispatcher, provider protocol, typed command
+router and backend, with only the HTTP transport replaced by synthetic responses.
+Their host accepts only the reserved example profile/origin and synthetic collection;
+it neither loads real custody credentials nor connects to a WordPress server.
+`cargo test --locked --all-features --test installed_flow` verifies unpacked process
+registration/discovery, explicit paging/get, plan creation, real terminal confirmation,
+apply/read-back, confirmed replay refusal, media and credential-revocation contracts.
+The GNOME keyring test runs separately against an isolated real OS provider. Neither
+fixture success nor package inspection is described as a real-site write acceptance.
