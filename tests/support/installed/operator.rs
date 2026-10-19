@@ -65,6 +65,15 @@ impl Context {
             String::from_utf8_lossy(&out.stdout)
         );
         if expected {
+            let output = String::from_utf8_lossy(&out.stdout);
+            let start = output.find('{').expect("protocol receipt missing");
+            let receipt: Value =
+                serde_json::from_str(output[start..].trim()).expect("invalid protocol receipt");
+            assert_eq!(
+                receipt["result"]["invocation"]["approved_plan_sha256"],
+                hash
+            );
+
             assert!(
                 out.status.success(),
                 "{}",

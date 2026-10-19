@@ -58,6 +58,7 @@ where
         get("origin")?.into(),
     ];
     let mut input = None;
+    let mut approved_plan = None;
     match op.mode {
         Mode::Read => {
             for key in ["page", "id"] {
@@ -88,6 +89,7 @@ where
             } else {
                 get("approval-sha256")?.into()
             };
+            approved_plan = Some(approved.clone());
             if !plan.matches(action, binding, &approved) {
                 return Err(Error::PlanMismatch);
             }
@@ -110,7 +112,12 @@ where
         );
         return Ok(json!({"sha256":plan.digest(),"plan":plan}));
     }
-    Ok(json!({"value":value,"invocation":{"operation":op.id,"binding":binding}}))
+    Ok(crate::provider_receipt::wrap(
+        value,
+        op.id,
+        binding,
+        approved_plan,
+    ))
 }
 
 #[cfg(test)]

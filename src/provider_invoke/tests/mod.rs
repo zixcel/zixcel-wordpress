@@ -37,6 +37,10 @@ fn actual_command_router_plans_and_applies_one_fixture_draft_through_the_bound_a
     })
     .unwrap();
     assert_eq!(applied["value"]["read_back"], true);
+    assert_eq!(
+        applied["invocation"]["approved_plan_sha256"],
+        planned["sha256"]
+    );
     assert_eq!(applied["invocation"]["operation"], "wordpress.draft-apply");
     let mut changed = planned["plan"].clone();
     changed["plan"]["title"] = json!("Changed");
