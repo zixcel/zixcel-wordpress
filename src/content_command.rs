@@ -46,6 +46,6 @@ pub(crate) fn run<T: Transport>(
             serde_json::to_value(reconcile_content(client, &plan)?)
                 .map_err(|_| Error::InvalidResponse)
         }
-        _ => Err(Error::InvalidInput),
+        _ => crate::media_command::run(client, args, now),
     }
 }

@@ -18,6 +18,9 @@ pub trait Transport {
         body: Option<&Value>,
         authenticated: bool,
     ) -> Result<Value>;
+    fn upload(&mut self, _filename: &str, _mime: &str, _bytes: &[u8]) -> Result<Value> {
+        Err(Error::Unsupported)
+    }
 }
 pub struct Https {
     pub(crate) origin: String,

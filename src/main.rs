@@ -4,6 +4,8 @@ mod content_command;
 mod credentials;
 mod help;
 mod input;
+mod local_file;
+mod media_command;
 mod provider;
 mod redaction;
 use serde_json::json;

@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+pub mod media;
 pub mod mutations;
 use serde_json::{Value, json};
 use std::{cell::RefCell, collections::VecDeque, rc::Rc};
@@ -10,6 +11,12 @@ pub struct Fake {
     pub calls: Calls,
 }
 impl Transport for Fake {
+    fn upload(&mut self, _: &str, _: &str, _: &[u8]) -> Result<Value> {
+        self.calls
+            .borrow_mut()
+            .push((Method::Post, "/wp-json/wp/v2/media".into(), true));
+        self.responses.pop_front().expect("expected upload fixture")
+    }
     fn origin(&self) -> &str {
         &self.origin
     }

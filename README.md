@@ -92,6 +92,23 @@ Lost write responses and mismatching read-back remain unknown. Reconciliation
 never retries, publishes or rolls back. Installed zix mutation routing remains a
 separate implementation; these are explicit native commands.
 
+## Media
+
+`media-list PROFILE ORIGIN PAGE` and `media-get PROFILE ORIGIN ID` return bounded
+metadata, never fetch media URLs. The initial same-origin policy rejects external
+CDN media URLs instead of silently fetching them. `media-plan PROFILE ORIGIN FILE`
+accepts `{filename,mime}` JSON and binds the exact file hash/size to a ten-minute
+plan. `media-apply PROFILE ORIGIN FILE HASH PRIVATE_JOURNAL_DIRECTORY` takes its
+plan on stdin and validates the file again before upload. PNG/JPEG/PDF signatures,
+matching extensions and an 8 MiB maximum are enforced; this is not malware scanning.
+Files must be explicitly selected, regular, current-user owned and not symlinks.
+
+Uploads may be publicly accessible immediately, even without a published article.
+The plan/receipt state this explicitly. This standalone operation does not attach
+media to a post or publish it. Subsequent attachments require a separate reviewed
+operation; failures never trigger an automatic delete/upload retry. A lost upload
+response leaves a durable unknown-result journal for operator reconciliation.
+
 ## Boundaries and remaining work
 
 The Crowsi bounded sensitive-body collector is reused. The transport owns Basic
@@ -103,7 +120,7 @@ draft operations, so it is not presented as a write adapter.
 This is not browser `/wp-admin` session automation. It does not reuse browser
 cookies. Browser dashboard login and the API's management operations require
 separate live evidence. Browser callback authorization, remote revoke,
-existing-draft updates, publish and media remain #160. Register the downloaded
+further integration is tracked by the owner issues. Register the downloaded
 `wordpress.extension.json` and executable with their verified hashes using
 `zix extensions add`. The read-only installed extension requires a dispatcher
 supporting explicit session-bus opt-in. It exposes `zix wordpress status`,
