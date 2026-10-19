@@ -2296,6 +2296,7 @@ dependencies = [
  "base64 0.22.1",
  "crowsi-credential-broker",
  "crowsi-transport-foundation",
+ "getrandom 0.4.3",
  "reqwest",
  "serde",
  "serde_json",

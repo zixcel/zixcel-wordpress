@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use serde_json::{Value, json};
-use std::{io::Read, path::Path};
+use std::path::Path;
 use zixcel_wordpress::{
     ContentEffect, ContentItem, ContentKind, ContentPlan, Error, Result, Transport, WordPress,
     apply_content, plan_content, reconcile_content,
@@ -14,9 +14,7 @@ struct Input {
 }
 pub(crate) fn nonce() -> Result<String> {
     let mut bytes = [0u8; 16];
-    std::fs::File::open("/dev/urandom")
-        .and_then(|mut f| f.read_exact(&mut bytes))
-        .map_err(|_| Error::LocalState)?;
+    getrandom::fill(&mut bytes).map_err(|_| Error::LocalState)?;
     Ok(bytes.iter().map(|b| format!("{b:02x}")).collect())
 }
 pub(crate) fn run<T: Transport>(

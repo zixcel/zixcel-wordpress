@@ -21,6 +21,7 @@ impl Transport for Https {
         let mut request = match method {
             Method::Get => self.client.get(format!("{}{path}", self.origin)),
             Method::Post => self.client.post(format!("{}{path}", self.origin)),
+            Method::Delete => self.client.delete(format!("{}{path}", self.origin)),
         };
         request = request.header("Accept", "application/json");
         request = request.timeout(
@@ -35,7 +36,7 @@ impl Transport for Https {
             request = request.json(body);
         }
         let response = request.send().map_err(|_| {
-            if method == Method::Post {
+            if method != Method::Get {
                 Error::UnknownResult
             } else {
                 Error::Transport
@@ -79,7 +80,7 @@ fn collect(mut response: reqwest::blocking::Response, method: Method) -> Result<
     let mut chunk = [0u8; 8192];
     loop {
         let count = response.read(&mut chunk).map_err(|_| {
-            if method == Method::Post {
+            if method != Method::Get {
                 Error::UnknownResult
             } else {
                 Error::Transport

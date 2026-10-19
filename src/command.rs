@@ -32,6 +32,9 @@ pub(crate) fn execute(args: &[String], collection: Option<&str>) -> Result<serde
         origin: args[2].clone(),
     };
     profile.validate()?;
+    if args[0] == "login-browser" {
+        return crate::auth_command::browser(profile, args);
+    }
     if args[0].starts_with("credential-") {
         return crate::credentials::manage(&profile, args);
     }

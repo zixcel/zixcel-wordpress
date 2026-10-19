@@ -15,6 +15,7 @@ reqwest = { version = "0.13.3", default-features = false, features = ["blocking"
 zeroize = "1.9"
 base64 = "0.22"
 sha2 = "0.11"
+getrandom = "0.4"
 crowsi-credential-broker = { git = "https://github.com/crowsi-net/credential-custody", rev = "8b19f4812e5be89f08a1d08d58ffccf482a16969", default-features = false, features = ["linux-secret-service"], optional = true }
 zix-cli = { git = "https://github.com/zixcel/cli", rev = "3eedec27bad3a1856e174176bb0770081404483e", optional = true }
 crowsi-transport-foundation = { git = "https://github.com/crowsi-net/crowsi-transport-foundation", rev = "f5edce4df5b58e90224ad05390d79fe2f571b4a5", features = ["http-contract"] }
