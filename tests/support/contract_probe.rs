@@ -26,6 +26,10 @@ mod provider_invoke;
 mod provider_manifest;
 #[path = "../../src/provider_ops.rs"]
 mod provider_ops;
+#[path = "../../src/provider_plan.rs"]
+mod provider_plan;
+#[path = "../../src/provider_receipt.rs"]
+mod provider_receipt;
 mod command {
     pub(crate) fn execute(
         args: &[String],

@@ -2,23 +2,7 @@ use crate::provider_ops::{Mode, Op};
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
 use zix_operation_contracts::{Binding, LocalPlan};
-use zixcel_wordpress::{ContentPlan, DraftPlan, Error, Result, RevokePlan, UploadPlan};
-fn inner_digest(native: &str, payload: &Value) -> Result<String> {
-    macro_rules! parse {
-        ($t:ty) => {
-            serde_json::from_value::<$t>(payload.clone())
-                .map_err(|_| Error::InvalidInput)?
-                .digest()
-        };
-    }
-    match native {
-        "draft-apply" => parse!(DraftPlan),
-        "content-apply" => parse!(ContentPlan),
-        "media-apply" => parse!(UploadPlan),
-        "revoke-apply" => parse!(RevokePlan),
-        _ => Err(Error::InvalidInput),
-    }
-}
+use zixcel_wordpress::{Error, Result};
 pub(crate) fn invoke<F>(
     op: &Op,
     values: &BTreeMap<String, String>,
@@ -58,6 +42,7 @@ where
         get("origin")?.into(),
     ];
     let mut input = None;
+    let mut approved_plan = None;
     match op.mode {
         Mode::Read => {
             for key in ["page", "id"] {
@@ -88,6 +73,7 @@ where
             } else {
                 get("approval-sha256")?.into()
             };
+            approved_plan = Some(approved.clone());
             if !plan.matches(action, binding, &approved) {
                 return Err(Error::PlanMismatch);
             }
@@ -95,7 +81,7 @@ where
                 if let Some(file) = values.get("file") {
                     args.push(file.clone());
                 }
-                args.push(inner_digest(op.native, &plan.plan)?);
+                args.push(crate::provider_plan::inner_digest(op.native, &plan.plan)?);
                 args.push(get("journal-directory")?.into());
             }
             input = Some(serde_json::to_vec(&plan.plan).map_err(|_| Error::InvalidInput)?);
@@ -110,7 +96,12 @@ where
         );
         return Ok(json!({"sha256":plan.digest(),"plan":plan}));
     }
-    Ok(json!({"value":value,"invocation":{"operation":op.id,"binding":binding}}))
+    Ok(crate::provider_receipt::wrap(
+        value,
+        op.id,
+        binding,
+        approved_plan,
+    ))
 }
 
 #[cfg(test)]
