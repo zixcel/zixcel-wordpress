@@ -23,7 +23,7 @@ struct Limits {
 }
 pub(crate) fn run() -> Result<Value> {
     let r: Request = crate::input::input()?;
-    if r.schema != "zix-provider/v1"
+    if r.schema != "zix-provider/v2"
         || r.id.len() != 32
         || !r
             .id
@@ -42,19 +42,27 @@ pub(crate) fn run() -> Result<Value> {
     let op = crate::provider_ops::ops()
         .find(|op| op.id == r.operation)
         .ok_or(Error::InvalidInput)?;
-    let response = match crate::provider_invoke::invoke(
+    let mut response = match crate::provider_invoke::invoke(
         op,
         &r.arguments,
         &binding,
         crate::command::execute,
     ) {
         Ok(value) => {
-            json!({"schema":"zix-provider/v1","id":r.id,"operation":r.operation,"result":value})
+            json!({"schema":"zix-provider/v2","id":r.id,"operation":r.operation,"result":value})
         }
         Err(error) => {
-            json!({"schema":"zix-provider/v1","id":r.id,"operation":r.operation,"error":crate::provider_error::code(error)})
+            json!({"schema":"zix-provider/v2","id":r.id,"operation":r.operation,"error":crate::provider_error::code(error)})
         }
     };
+    let catalog = crate::provider_guidance::catalog()?;
+    let guide = catalog
+        .select(&r.operation, &r.arguments)
+        .ok_or(Error::InvalidInput)?;
+    response["diagnostic"] = serde_json::to_value(
+        zix_operation_contracts::guidance::Diagnostic::observe(guide.clone(), &response),
+    )
+    .map_err(|_| Error::InvalidResponse)?;
     if serde_json::to_vec(&response)
         .map_err(|_| Error::InvalidResponse)?
         .len()

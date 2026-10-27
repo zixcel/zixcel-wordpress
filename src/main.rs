@@ -10,6 +10,7 @@ mod local_file;
 mod media_command;
 mod provider;
 mod provider_error;
+mod provider_guidance;
 mod provider_invoke;
 mod provider_manifest;
 mod provider_ops;

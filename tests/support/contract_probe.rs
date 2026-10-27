@@ -20,6 +20,8 @@ mod media_command;
 mod provider;
 #[path = "../../src/provider_error.rs"]
 mod provider_error;
+#[path = "../../src/provider_guidance.rs"]
+mod provider_guidance;
 #[path = "../../src/provider_invoke.rs"]
 mod provider_invoke;
 #[path = "../../src/provider_manifest.rs"]
@@ -69,7 +71,11 @@ fn main() {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     let result = if args == ["--manifest"] {
         provider::manifest()
-    } else if args == ["--zix-provider-v1"] {
+    } else if args == ["--guidance"] {
+        provider_guidance::catalog().and_then(|c| {
+            serde_json::to_value(c).map_err(|_| zixcel_wordpress::Error::InvalidInput)
+        })
+    } else if args == ["--zix-provider-v2"] {
         provider::run()
     } else {
         Err(zixcel_wordpress::Error::Unsupported)
