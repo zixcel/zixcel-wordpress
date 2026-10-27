@@ -9,7 +9,11 @@ pub(crate) fn run() -> Result<serde_json::Value> {
     if args == ["--manifest"] {
         return crate::provider::manifest();
     }
-    if args == ["--zix-provider-v1"] {
+    if args == ["--guidance"] {
+        return serde_json::to_value(crate::provider_guidance::catalog()?)
+            .map_err(|_| Error::InvalidResponse);
+    }
+    if args == ["--zix-provider-v2"] {
         return crate::provider::run();
     }
     execute(&args, None, None)

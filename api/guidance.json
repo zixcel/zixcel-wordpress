@@ -1,0 +1,1039 @@
+[
+  {
+    "operation": "wordpress.login",
+    "selectors": {},
+    "intent": "login_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "IDENTITY",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "context",
+        "value": "Inspect the selected stored profile and authenticated identity; status does not prove every content capability",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.posts-list",
+    "selectors": {},
+    "intent": "posts_list_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected post type and ownership capabilities; posts use edit_posts, pages use edit_pages, and other authors require the corresponding edit_others capability",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.pages-list",
+    "selectors": {},
+    "intent": "pages_list_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "edit_pages for edit-context pages; additional capabilities depend on ownership and requested content",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.posts-get",
+    "selectors": {},
+    "intent": "posts_get_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected post type and ownership capabilities; posts use edit_posts, pages use edit_pages, and other authors require the corresponding edit_others capability",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.pages-get",
+    "selectors": {},
+    "intent": "pages_get_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "edit_pages for edit-context pages; additional capabilities depend on ownership and requested content",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.media-list",
+    "selectors": {},
+    "intent": "media_list_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "WordPress edit-context media visibility; upload_files for reviewed upload plans and writes",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.media-get",
+    "selectors": {},
+    "intent": "media_get_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "WordPress edit-context media visibility; upload_files for reviewed upload plans and writes",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.auth-status",
+    "selectors": {},
+    "intent": "auth_status_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "IDENTITY",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "context",
+        "value": "Inspect the selected stored profile and authenticated identity; status does not prove every content capability",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.draft-plan",
+    "selectors": {},
+    "intent": "draft_plan_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "PLAN"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected post type and ownership capabilities; posts use edit_posts, pages use edit_pages, and other authors require the corresponding edit_others capability",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Reviewed local inputs and selected target; producing a plan does not execute its write",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.content-plan",
+    "selectors": {},
+    "intent": "content_plan_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "PLAN"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected post type and ownership capabilities; posts use edit_posts, pages use edit_pages, and other authors require the corresponding edit_others capability",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Reviewed local inputs and selected target; producing a plan does not execute its write",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.media-plan",
+    "selectors": {},
+    "intent": "media_plan_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "PLAN"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "WordPress edit-context media visibility; upload_files for reviewed upload plans and writes",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Reviewed local inputs and selected target; producing a plan does not execute its write",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.revoke-plan",
+    "selectors": {},
+    "intent": "revoke_plan_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "IDENTITY",
+      "PLAN"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected application-password identity and authorization to revoke that exact credential",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Reviewed local inputs and selected target; producing a plan does not execute its write",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.content-reconcile",
+    "selectors": {},
+    "intent": "content_reconcile_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "READ"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected post type and ownership capabilities; posts use edit_posts, pages use edit_pages, and other authors require the corresponding edit_others capability",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Read back the original content plan; a missing record or partial response does not prove absence",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.draft-apply",
+    "selectors": {},
+    "intent": "draft_apply_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "APPLY"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected post type and ownership capabilities; posts use edit_posts, pages use edit_pages, and other authors require the corresponding edit_others capability",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Fresh bound plan, explicit operator confirmation and one-use journal; uncertain effects require readback and are never replayed",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.content-reconcile",
+        "purpose": "readback_original_content_plan",
+        "arguments": {},
+        "on": [
+          "outcome_unknown",
+          "incomplete",
+          "other"
+        ],
+        "requires_context": {
+          "plan": "original_reviewed_content_plan"
+        }
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.content-apply",
+    "selectors": {},
+    "intent": "content_apply_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "APPLY"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected post type and ownership capabilities; posts use edit_posts, pages use edit_pages, and other authors require the corresponding edit_others capability",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Fresh bound plan, explicit operator confirmation and one-use journal; uncertain effects require readback and are never replayed",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.content-reconcile",
+        "purpose": "readback_original_content_plan",
+        "arguments": {},
+        "on": [
+          "outcome_unknown",
+          "incomplete",
+          "other"
+        ],
+        "requires_context": {
+          "plan": "original_reviewed_content_plan"
+        }
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.media-apply",
+    "selectors": {},
+    "intent": "media_apply_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "CONTENT",
+      "APPLY"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "WordPress edit-context media visibility; upload_files for reviewed upload plans and writes",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Fresh bound plan, explicit operator confirmation and one-use journal; uncertain effects require readback and are never replayed",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  },
+  {
+    "operation": "wordpress.revoke-apply",
+    "selectors": {},
+    "intent": "revoke_apply_selected_wordpress_profile",
+    "keywords": [
+      "WORDPRESS",
+      "IDENTITY",
+      "APPLY"
+    ],
+    "requirements": [
+      {
+        "kind": "audience",
+        "value": "Exact reviewed HTTPS WordPress origin; credentials are bound to that origin and profile",
+        "subject": "wordpress_credential"
+      },
+      {
+        "kind": "runtime",
+        "value": "Linux OS Secret Service with selected persistent collection; no automatic unlock",
+        "subject": "host"
+      },
+      {
+        "kind": "provider_permission",
+        "value": "Selected application-password identity and authorization to revoke that exact credential",
+        "subject": "operator"
+      },
+      {
+        "kind": "context",
+        "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
+        "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Fresh bound plan, explicit operator confirmation and one-use journal; uncertain effects require readback and are never replayed",
+        "subject": "operation"
+      }
+    ],
+    "next_actions": [
+      {
+        "namespace": "credential",
+        "operation": "help",
+        "purpose": "inspect_secure_credential_usage",
+        "arguments": {},
+        "on": [
+          "context",
+          "authentication"
+        ]
+      },
+      {
+        "namespace": "wordpress",
+        "operation": "wordpress.auth-status",
+        "purpose": "inspect_bound_wordpress_identity",
+        "arguments": {},
+        "on": [
+          "authentication",
+          "authorization",
+          "context"
+        ]
+      }
+    ],
+    "documentation": [
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+    ]
+  }
+]

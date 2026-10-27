@@ -69,7 +69,7 @@ fn main() {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     let result = if args == ["--manifest"] {
         provider::manifest()
-    } else if args == ["--zix-provider-v1"] {
+    } else if args == ["--zix-provider-v2"] {
         provider::run()
     } else {
         Err(zixcel_wordpress::Error::Unsupported)

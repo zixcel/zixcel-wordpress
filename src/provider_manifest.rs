@@ -5,9 +5,8 @@ pub(crate) fn manifest() -> Result<Value> {
     if !cfg!(all(target_os = "linux", feature = "os-keyring")) {
         return Err(Error::Unsupported);
     }
-    Ok(
-        json!({"schema":"zix-extension/v2","package":"zixcel-wordpress","version":env!("CARGO_PKG_VERSION"),
- "namespace":"wordpress","platform":"linux-x86_64","protocol":"zix-provider/v1",
+    let value = json!({"schema":"zix-extension/v2","package":"zixcel-wordpress","version":env!("CARGO_PKG_VERSION"),
+ "namespace":"wordpress","platform":"linux-x86_64","protocol":"zix-provider/v2",
  "credential_environment":[],"runtime_environment":["DBUS_SESSION_BUS_ADDRESS"],"timeout_ms":40000,
  "commands":crate::provider_ops::ops().map(|op|{
   let mut args=vec![json!({"name":"profile","required":true,"maximum":48}),
@@ -16,8 +15,14 @@ pub(crate) fn manifest() -> Result<Value> {
   json!({"id":op.id,"words":op.words,"effect":op.effect,
     "description":if op.effect=="read"{"Read or plan only; explicit origin-bound OS custody, no automatic unlock."}else{"Explicit local operator write; exact plan approval and one-use journal required."},
     "required_permissions":[if op.effect=="read"{"wordpress:read"}else{"wordpress:write"}],"arguments":args})
- }).collect::<Vec<_>>()}),
+ }).collect::<Vec<_>>()});
+    let mut manifest = zix_native_provider::Manifest::parse(
+        &serde_json::to_vec(&value).map_err(|_| Error::InvalidInput)?,
     )
+    .map_err(|_| Error::InvalidInput)?;
+    zix_native_provider::guidance::decorate(&mut manifest, include_bytes!("../api/guidance.json"))
+        .map_err(|_| Error::InvalidInput)?;
+    serde_json::to_value(manifest).map_err(|_| Error::InvalidInput)
 }
 pub(crate) fn binding() -> Result<Binding> {
     use std::io::Read;

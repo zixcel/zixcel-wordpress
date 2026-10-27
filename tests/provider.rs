@@ -5,7 +5,7 @@ use std::{
 };
 fn request(value: &Value) -> Output {
     let mut child = Command::new(env!("CARGO_BIN_EXE_zix-wordpress"))
-        .arg("--zix-provider-v1")
+        .arg("--zix-provider-v2")
         .env_clear()
         .env(
             "DBUS_SESSION_BUS_ADDRESS",
@@ -30,7 +30,7 @@ fn request(value: &Value) -> Output {
     child.wait_with_output().unwrap()
 }
 fn valid() -> Value {
-    json!({"schema":"zix-provider/v1","id":"a".repeat(32),"operation":"wordpress.login",
+    json!({"schema":"zix-provider/v2","id":"a".repeat(32),"operation":"wordpress.login",
         "arguments":{"profile":"example-site","origin":"https://site.example.test","collection":"default"},
         "limits":{"timeout_ms":40000,"maximum_response_bytes":131072},"binding":binding()})
 }
