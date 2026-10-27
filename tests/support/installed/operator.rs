@@ -54,7 +54,7 @@ impl Context {
         writeln!(
             child.stdin.take().unwrap(),
             "{}",
-            if approve { hash } else { "" }
+            if approve { "yes" } else { "" }
         )
         .unwrap();
         let out = child.wait_with_output().unwrap();
