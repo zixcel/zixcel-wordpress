@@ -92,7 +92,11 @@ fn unsupported_operations_and_protocol_mutations_cannot_trigger_an_operation() {
 #[test]
 fn unavailable_custody_never_falls_back_to_password_environment_or_leaks_it() {
     let out = request(&valid());
-    assert!(out.status.success());
+    assert!(
+        out.status.success(),
+        "provider rejected fixture: {}",
+        String::from_utf8_lossy(&out.stderr)
+    );
     let value: Value = serde_json::from_slice(&out.stdout).unwrap();
     assert_eq!(value["error"], "custody_or_local_state_unavailable");
     for bytes in [&out.stdout, &out.stderr] {
