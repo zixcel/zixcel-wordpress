@@ -1,6 +1,6 @@
 # Operation guidance
 
-Requires Zix 0.7.0 or later. The native `wordpress` extension 0.4.0 declares every registered operation in its source-owned `api/guidance.json` (under the native CLI crate when this repository has multiple crates). Metadata inspection reads no credentials and sends no provider requests.
+Requires Zix 0.7.0 or later. The native `wordpress` extension 0.4.1 declares every registered operation in its source-owned `api/guidance.json` (under the native CLI crate when this repository has multiple crates). Metadata inspection reads no credentials and sends no provider requests.
 
 ```sh
 zix capabilities --compact --format json
