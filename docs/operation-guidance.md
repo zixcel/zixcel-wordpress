@@ -15,3 +15,7 @@ The compact view lists intent, keywords, effects, required arguments, credential
 Authentication errors require authentication inspection. Authorization errors require reviewing the exact resource, audience and permission named by the operation. Do not expand privileges automatically or repeat a denied request. Partial observations are not proof of absence. For an uncertain write outcome, inspect current state and reconcile the retained journal before making a new plan; never replay the write automatically.
 
 `zix-provider/v2` replies carry bounded structured diagnostics. Legacy standalone or library interfaces, where present, retain their own documented contracts.
+
+## Origin-bound credential enrollment
+
+This extension uses its own origin-bound OS custody. Enroll through the packaged `zix-wordpress credential-import PROFILE ORIGIN COLLECTION` hidden-input command as documented in the repository README. `zix credential set` does not enroll that store. Only inspect a stored identity after confirming the matching profile/origin and unlocked credential; storing a credential does not prove WordPress capabilities.

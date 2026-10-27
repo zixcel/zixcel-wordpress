@@ -10,7 +10,23 @@ fn metadata_requires_built_custody_but_never_connects_to_it() {
         assert!(o.status.success(), "{}", String::from_utf8_lossy(&o.stderr));
         let c: serde_json::Value = serde_json::from_slice(&o.stdout).unwrap();
         assert_eq!(c["namespace"], "wordpress");
-        assert_eq!(c["entries"].as_array().unwrap().len(), 17);
+        let entries = c["entries"].as_array().unwrap();
+        assert_eq!(entries.len(), 17);
+        for guide in entries {
+            assert!(guide["requirements"].as_array().unwrap().iter().any(|r| {
+                r["value"]
+                    .as_str()
+                    .unwrap()
+                    .contains("zix-wordpress credential-import")
+            }));
+            assert!(
+                guide["next_actions"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .all(|a| a["namespace"] != "credential")
+            );
+        }
     } else {
         assert!(!o.status.success());
     }

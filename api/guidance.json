@@ -28,22 +28,17 @@
         "kind": "context",
         "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
         "subject": "operation"
-      }
-    ],
-    "next_actions": [
+      },
       {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
+    "next_actions": [],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -75,19 +70,14 @@
         "kind": "context",
         "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -97,11 +87,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -133,19 +128,14 @@
         "kind": "context",
         "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -155,11 +145,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -191,19 +186,14 @@
         "kind": "context",
         "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -213,11 +203,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -249,19 +244,14 @@
         "kind": "context",
         "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -271,11 +261,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -307,19 +302,14 @@
         "kind": "context",
         "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -329,11 +319,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -365,19 +360,14 @@
         "kind": "context",
         "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -387,11 +377,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -423,22 +418,17 @@
         "kind": "context",
         "value": "Origin-bound application password in OS custody, not an account password or token for a different service",
         "subject": "operation"
-      }
-    ],
-    "next_actions": [
+      },
       {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
+    "next_actions": [],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -475,19 +465,14 @@
         "kind": "context",
         "value": "Reviewed local inputs and selected target; producing a plan does not execute its write",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -497,11 +482,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -538,19 +528,14 @@
         "kind": "context",
         "value": "Reviewed local inputs and selected target; producing a plan does not execute its write",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -560,11 +545,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -601,19 +591,14 @@
         "kind": "context",
         "value": "Reviewed local inputs and selected target; producing a plan does not execute its write",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -623,11 +608,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -664,19 +654,14 @@
         "kind": "context",
         "value": "Reviewed local inputs and selected target; producing a plan does not execute its write",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -686,11 +671,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -727,19 +717,14 @@
         "kind": "context",
         "value": "Read back the original content plan; a missing record or partial response does not prove absence",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -749,11 +734,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -790,19 +780,14 @@
         "kind": "context",
         "value": "Fresh bound plan, explicit operator confirmation and one-use journal; uncertain effects require readback and are never replayed",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -812,7 +797,11 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       },
       {
         "namespace": "wordpress",
@@ -830,7 +819,8 @@
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -867,19 +857,14 @@
         "kind": "context",
         "value": "Fresh bound plan, explicit operator confirmation and one-use journal; uncertain effects require readback and are never replayed",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -889,7 +874,11 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       },
       {
         "namespace": "wordpress",
@@ -907,7 +896,8 @@
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -944,19 +934,14 @@
         "kind": "context",
         "value": "Fresh bound plan, explicit operator confirmation and one-use journal; uncertain effects require readback and are never replayed",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -966,11 +951,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   },
   {
@@ -1007,19 +997,14 @@
         "kind": "context",
         "value": "Fresh bound plan, explicit operator confirmation and one-use journal; uncertain effects require readback and are never replayed",
         "subject": "operation"
+      },
+      {
+        "kind": "context",
+        "value": "Enroll with packaged zix-wordpress credential-import PROFILE ORIGIN COLLECTION; zix credential set does not enroll this origin-bound store",
+        "subject": "operator"
       }
     ],
     "next_actions": [
-      {
-        "namespace": "credential",
-        "operation": "help",
-        "purpose": "inspect_secure_credential_usage",
-        "arguments": {},
-        "on": [
-          "context",
-          "authentication"
-        ]
-      },
       {
         "namespace": "wordpress",
         "operation": "wordpress.auth-status",
@@ -1029,11 +1014,16 @@
           "authentication",
           "authorization",
           "context"
-        ]
+        ],
+        "requires_context": {
+          "credential": "present_and_unlocked",
+          "profile_and_origin": "reviewed"
+        }
       }
     ],
     "documentation": [
-      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/"
+      "https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/",
+      "https://github.com/zixcel/zixcel-wordpress/blob/main/README.md"
     ]
   }
 ]
