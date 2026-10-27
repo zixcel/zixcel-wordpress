@@ -1,6 +1,6 @@
 [package]
 name = "zixcel-wordpress"
-version = "0.3.1"
+version = "0.4.1"
 edition = "2024"
 rust-version = "1.97"
 license = "Apache-2.0"
@@ -8,7 +8,8 @@ repository = "https://github.com/zixcel/zixcel-wordpress"
 description = "Origin-bound WordPress core authentication and explicit draft operations"
 publish = false
 [dependencies]
-zix-operation-contracts = { git = "https://github.com/zixcel/cli", rev = "f03584c875069187339f164b1c2d684e98b00bc0" }
+zix-native-provider = { git = "https://github.com/zixcel/cli", rev = "660af91c8b282398369d6bb77d0ece545b49cf34" }
+zix-operation-contracts = { git = "https://github.com/zixcel/cli", rev = "660af91c8b282398369d6bb77d0ece545b49cf34" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 url = "2.5"
@@ -19,7 +20,7 @@ sha2 = "0.11"
 getrandom = "0.4"
 tokio = { version = "1.49", features = ["rt","macros"], optional = true }
 crowsi-credential-broker = { git = "https://github.com/crowsi-net/credential-custody", rev = "8b19f4812e5be89f08a1d08d58ffccf482a16969", default-features = false, features = ["linux-secret-service"], optional = true }
-zix-cli = { git = "https://github.com/zixcel/cli", rev = "f03584c875069187339f164b1c2d684e98b00bc0", optional = true }
+zix-cli = { git = "https://github.com/zixcel/cli", rev = "660af91c8b282398369d6bb77d0ece545b49cf34", optional = true }
 crowsi-transport-foundation = { git = "https://github.com/crowsi-net/crowsi-transport-foundation", rev = "f5edce4df5b58e90224ad05390d79fe2f571b4a5", features = ["http-contract"] }
 [dev-dependencies]
 tempfile = "3.27"

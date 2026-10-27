@@ -199,3 +199,5 @@ registration/discovery, explicit paging/get, plan creation, real terminal confir
 apply/read-back, confirmed replay refusal, media and credential-revocation contracts.
 The GNOME keyring test runs separately against an isolated real OS provider. Neither
 fixture success nor package inspection is described as a real-site write acceptance.
+
+Native Zix operation discovery and diagnostic handling: [operation guidance](docs/operation-guidance.md).
